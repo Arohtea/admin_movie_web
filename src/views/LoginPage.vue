@@ -20,7 +20,6 @@
 import router from '@/router';
 import axios from 'axios';
 import qs from 'qs'; 
-import { mapState } from 'vuex';
 export default {
     router,
     data() {
@@ -47,7 +46,7 @@ export default {
                 localStorage.setItem('jwt-token',JSON.stringify(token));
                 this.username = '';
                 this.password = '';
-                router.push('/'); 
+                router.push('/frontpage'); 
             } else {
                 throw new Error('无效的凭据');
             }
@@ -58,7 +57,7 @@ export default {
     }
     },
     computed: {
-        ...mapState(['userId', 'logincode']),
+        
     }
 };
 </script>

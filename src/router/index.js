@@ -1,8 +1,15 @@
 import Vue from 'vue'
 import VueRouter from "vue-router";
 import LoginPage from '@/views/LoginPage.vue';
+import FrontPage from '@/views/FrontPage.vue';
+import CateAdd from '@/components/CateAdd.vue';
+import CateDel from '@/components/CateDel.vue';
+import CateUpdate from '@/components/CateUpdate.vue';
+import MovieAdd from '@/components/MovieAdd.vue';
+import MovieDel from '@/components/MovieDel.vue';
+import MovieUpdate from '@/components/MovieUpdate.vue';
+import MovieSearch from '@/components/MovieSearch.vue';
 
-// import axios from 'axios';
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -16,33 +23,51 @@ const router = new VueRouter({
         {
             path: '/',
             redirect: '/loginpage'
+        },
+        {
+            name: 'frontpage',
+            path: '/frontpage',
+            component: FrontPage,
+            children: [
+                {
+                    name: 'cateadd',
+                    path: '/category/add',
+                    component: CateAdd
+                },
+                {
+                    name: 'catedel',
+                    path: '/category/delete',
+                    component: CateDel
+                },
+                {
+                    name: 'cateupdate',
+                    path: '/category/update',
+                    component: CateUpdate
+                },
+                {
+                    name: 'movieadd',
+                    path: '/movie/add',
+                    component: MovieAdd
+                },
+                {
+                    name: 'moviedel',
+                    path: '/movie/delete',
+                    component: MovieDel
+                },
+                {
+                    name: 'movieupdate',
+                    path: '/movie/update',
+                    component: MovieUpdate
+                },
+                {
+                    name: 'moviesearch',
+                    path: '/movie/search',
+                    component: MovieSearch
+                }
+            ]
         }
     ]
 })
-// router.beforeEach((to, from, next) => {
-//     if(to.path.startsWith('/login')){
-//         window.localStorage.removeItem('jwt-token')
-//         next()
-//     } else {
-//         let admin=JSON.parse(window.localStorage.getItem('jwt-token'))
-//         if(!admin){
-//             next({path:'/login'})
-//         } else{
-//             axios({
-//                 url:'http://localhost:8080/checktoken',
-//                 method:'get',
-//                 headers:{
-//                      Authorization:admin.token
-//                 }
-//             }).then((response) => {
-//                 if(response.data == "fail"){
-//                     console.log('校验失败')
-//                     next({path : '/error'})
-//                 }
-//             })
-//             next()
-//         }
-//     }
-// })
+
 
 export default router

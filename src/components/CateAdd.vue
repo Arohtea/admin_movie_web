@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-view></router-view>
+    <p>asdasdsaaaaaaaaaaasd1</p>
   </div>
 </template>
 
