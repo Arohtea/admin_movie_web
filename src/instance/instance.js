@@ -6,10 +6,9 @@ const instance = axios.create({
   timeout: 10000,
 });
 
-// 设置请求拦截器
 instance.interceptors.request.use(
   function (config) {
-    const token = localStorage.getItem('jwt-token'); // 假设这是一个获取token的函数
+    const token = localStorage.getItem('jwt-token'); 
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
