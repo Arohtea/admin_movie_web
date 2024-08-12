@@ -9,7 +9,7 @@ import MovieAdd from '@/components/MovieAdd.vue';
 import MovieDel from '@/components/MovieDel.vue';
 import MovieUpdate from '@/components/MovieUpdate.vue';
 import MovieSearch from '@/components/MovieSearch.vue';
-
+import NotFound from '@/views/NotFound.vue';
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -65,6 +65,10 @@ const router = new VueRouter({
                     component: MovieSearch
                 }
             ]
+        },
+        {
+            path: '*',
+            component: NotFound
         }
     ]
 })

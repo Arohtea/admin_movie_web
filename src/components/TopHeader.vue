@@ -2,16 +2,12 @@
   <header class="top-nav">
     <div class="logo-container">
       <router-link to="/frontpage">
-        <img src="../assets/logo.png" alt="Logo" style="width: 40px;">
+        <img src="https://movie-web12321.oss-cn-beijing.aliyuncs.com/e201475f-0ccf-4087-ac24-ead6d9d362f1.jpg" alt="Logo" style="width: 40px;">
       </router-link>
-      <router-link to="/frontpage" style="text-decoration: none ;color :black">首页</router-link>
+      <router-link to="/frontpage" style="text-decoration: none ;color :black">电影网站管理系统</router-link>
       <div class="space" style="width:10px"></div>
     </div>
     <div class="middle-space"></div>
-    <div class="user-profile">
-      <span class="username">管理员</span>
-      <!-- <img :src="avatarr" alt="User Avatar" /> -->
-    </div>
   </header>
 </template>
 
