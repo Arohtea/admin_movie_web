@@ -1,9 +1,8 @@
 <template>
   <div class="movie-management">
-    <!-- 新增电影表单 -->
     <el-form :model="form" ref="form" :rules="rules" label-width="120px" class="movie-form">
       <el-form-item prop="categoryId" label="电影分类">
-        <el-input v-model="form.categoryId"></el-input>
+        <el-input v-model.number="form.categoryId"></el-input>
       </el-form-item>
       <el-form-item prop="title" label="电影名称">
         <el-input v-model="form.title"></el-input>
@@ -69,7 +68,7 @@ export default {
   data() {
     return {
       form: {
-        categoryId: '',
+        categoryId:null,
         title: '',
         imgsrc: '',
         imgcsrc: '',
