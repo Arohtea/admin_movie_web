@@ -9,7 +9,7 @@
     <el-card class="list-section">
       <h2>已有的电影分类</h2>
       <el-table :data="categories" style="width: 100%">
-        <el-table-column prop="id" label="ID" width="80">
+        <el-table-column prop="id" label="分类ID" width="80">
         </el-table-column>
         <el-table-column prop="name" label="分类名称" width="180">
         </el-table-column>
@@ -38,7 +38,8 @@ export default {
             this.fetchcategories();
             this.newCategoryName = '';
           } else {
-            alert('添加电影分类失败');
+            // alert('添加电影分类失败');
+            this.$message.error('添加电影分类失败');
           }
         });
       }
@@ -49,7 +50,8 @@ export default {
       this.categories = response.data;
     }
       else{
-        alert('获取电影分类失败');
+        // alert('获取电影分类失败');
+        this.$message.error('获取电影分类失败');
       }
     });
     }

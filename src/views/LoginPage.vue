@@ -42,7 +42,6 @@ export default {
             });
             if (response.code === 0) {
                 const token = response.data;
-                this.$store.commit('setToken', token);
                 localStorage.setItem('jwt-token',JSON.stringify(token));
                 this.username = '';
                 this.password = '';
@@ -51,7 +50,8 @@ export default {
                 throw new Error('无效的凭据');
             }
         } catch (error) {
-            alert('登录失败，请检查您的凭据。');
+            // alert('登录失败，请检查您的凭据。');
+            this.$message.error('登录失败，请检查您的凭据。');
             console.error(error);
         }
     }

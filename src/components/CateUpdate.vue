@@ -65,7 +65,8 @@ export default {
         if (response.code === 0) {
           this.categories = response.data;
         } else {
-          alert('获取电影分类失败');
+          // alert('获取电影分类失败');
+          this.$message.error('获取电影分类失败');
         }
       });
     },
@@ -74,7 +75,8 @@ export default {
       formRef.validate(async valid => {
         if (valid) {
           if (this.form.selectedCategory === '') {
-            alert('请选择分类');
+            // alert('请选择分类');
+            this.$message.warning('请选择分类');
             return;
           }
           const categoryId = Number(this.form.selectedCategory);
@@ -88,10 +90,12 @@ export default {
             this.form.selectedCategory = ''; 
             this.form.name = '';
           } catch (error) {
-            console.error('Failed to update category:', error);
+            // console.error('Failed to update category:', error);
+            this.$message.error('更新电影分类失败');
           }
         } else {
-          console.log('Validation failed');
+          // console.log('Validation failed');
+          this.$message.error('请输入分类名称');
           return false;
         }
       });

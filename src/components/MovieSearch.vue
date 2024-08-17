@@ -69,6 +69,7 @@ export default {
           })
           .catch(error => {
             console.error('Failed to search movies:', error);
+            this.$message.error('搜索电影失败');
           });
       }
     },

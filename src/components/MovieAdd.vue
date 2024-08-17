@@ -142,6 +142,7 @@ export default {
         })
         .catch(error => {
           console.error('Failed to fetch movies:', error);
+          this.$message.error('获取电影列表失败');
         });
     },
     handleCurrentChange(val) {
