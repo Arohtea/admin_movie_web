@@ -64,8 +64,8 @@ export default {
           }
         })
           .then(response => {
-            this.searchResults = response.data.items;
-            this.searchTotal = response.data.total;
+            this.searchResults = response.data.data.items;
+            this.searchTotal = response.data.data.total;
           })
           .catch(error => {
             console.error('Failed to search movies:', error);

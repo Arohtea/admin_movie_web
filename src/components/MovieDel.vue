@@ -90,7 +90,7 @@ export default {
 
       instance.get(`/movie/search?id=${movieId}`)
         .then(response => {
-          const movie = response.data;
+          const movie = response.data.data;
           this.movie[0] = movie;
         })
         .catch(error => {

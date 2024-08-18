@@ -70,7 +70,7 @@ export default {
       this.confirmVisible = false; 
       instance.delete(`/comment?id=${this.selectedComment.id}`)
         .then(response => {
-          if (response.code === 0) {
+          if (response.data.code === 0) {
             this.$message.success('删除成功');
             this.loadComments(this.currentPage); 
           } else {
@@ -99,7 +99,7 @@ export default {
 
       instance.get(`/comment?pageNum=${page}&pageSize=${this.pageSize}&movieId=${movieId}`)
         .then(response => {
-          const { items, total } = response.data;
+          const { items, total } = response.data.data;
           this.currentComments = items;
           this.totalComments = total;
         })

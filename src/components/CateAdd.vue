@@ -34,7 +34,7 @@ export default {
     async addCategory() {
       if (this.newCategoryName.trim()) {
         instance.post('/category', { name: this.newCategoryName }).then(response => {
-          if (response.code === 0) {
+          if (response.data.code === 0) {
             this.fetchcategories();
             this.newCategoryName = '';
           } else {
@@ -46,11 +46,10 @@ export default {
     },
     async fetchcategories() {
      instance.get('/category').then(response => {
-      if (response.code === 0){
-      this.categories = response.data;
+      if (response.data.code === 0){
+      this.categories = response.data.data;
     }
       else{
-        // alert('获取电影分类失败');
         this.$message.error('获取电影分类失败');
       }
     });

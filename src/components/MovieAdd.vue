@@ -92,8 +92,8 @@ export default {
       rules: {
         categoryId: [{ required: true, message: '请输入电影分类', trigger: 'blur' }],
         title: [{ required: true, message: '请输入电影名称', trigger: 'blur' }],
-        imgsrc: [{ required: true, message: '请输入电影图像地址', trigger: 'blur' }],
-        imgcsrc: [{ required: true, message: '请输入电影轮播图地址', trigger: 'blur' }],
+        // imgsrc: [{ required: true, message: '请输入电影图像地址', trigger: 'blur' }],
+        // imgcsrc: [{ required: true, message: '请输入电影轮播图地址', trigger: 'blur' }],
         actors: [{ required: true, message: '请输入电影演员', trigger: 'blur' }],
         director: [{ required: true, message: '请输入电影导演', trigger: 'blur' }],
         country: [{ required: true, message: '请输入国家', trigger: 'blur' }],
@@ -143,8 +143,8 @@ export default {
         }
       })
         .then(response => {
-          this.movies = response.data.items;
-          this.total = response.data.total; 
+          this.movies = response.data.data.items;
+          this.total = response.data.data.total; 
         })
         .catch(error => {
           console.error('Failed to fetch movies:', error);
@@ -168,7 +168,9 @@ export default {
     return isJPGorPNG && isLt2M;
   },
     handleAvatarSuccess(response) {
-      if (response.code === 0) {
+      console.log(response.code);
+      if (response!=null) {
+        console.log(response.data);
         this.form.imgsrc = response.data;
         this.$message.success('上传成功');
       } else {

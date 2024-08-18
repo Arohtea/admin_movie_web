@@ -59,10 +59,9 @@ export default {
     },
     async fetchCategories() {
       instance.get('/category').then(response => {
-        if (response.code === 0) {
-          this.categories = response.data;
+        if (response.data.code === 0) {
+          this.categories = response.data.data;
         } else {
-          // alert('获取电影分类失败');
           this.$message.error('获取电影分类失败');
         }
       });
@@ -72,22 +71,24 @@ export default {
       formRef.validate(async valid => {
         if (valid) {
           if (this.form.selectedCategory === '') {
-            // alert('请选择分类');
             this.$message.warning('请选择分类');
             return;
           }
           const categoryId = Number(this.form.selectedCategory);
           try {
-            await instance.delete(`/category/?id=${categoryId}` );
-            this.fetchCategories();
-            this.form.selectedCategory = ''; 
-            this.form.name = '';
+            const response=await instance.delete(`/category?id=${categoryId}` );
+            if (response.data.code === 0){
+              this.$message.success('删除电影分类成功');
+              this.fetchCategories();
+              this.form.selectedCategory = ''; 
+              this.form.name = '';
+            } else {
+              this.$message.error('删除电影分类失败');
+            }
           } catch (error) {
-            // console.error('Failed to update category:', error);
             this.$message.error('删除电影分类失败');
           }
         } else {
-          // console.log('Validation failed');
           this.$message.error('请输入分类名称');
           return false;
         }

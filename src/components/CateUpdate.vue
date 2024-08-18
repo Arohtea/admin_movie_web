@@ -62,10 +62,9 @@ export default {
     },
     async fetchCategories() {
       instance.get('/category').then(response => {
-        if (response.code === 0) {
-          this.categories = response.data;
+        if (response.data.code === 0) {
+          this.categories = response.data.data;
         } else {
-          // alert('获取电影分类失败');
           this.$message.error('获取电影分类失败');
         }
       });
@@ -75,7 +74,6 @@ export default {
       formRef.validate(async valid => {
         if (valid) {
           if (this.form.selectedCategory === '') {
-            // alert('请选择分类');
             this.$message.warning('请选择分类');
             return;
           }
@@ -85,12 +83,14 @@ export default {
             name: this.form.name
           };
           try {
-            await instance.put('/category', updatedData);
+            const response=await instance.put('/category', updatedData);
+            if (response.data.code === 0){
+              this.$message.success('更新电影分类成功');
+            }
             this.fetchCategories();
             this.form.selectedCategory = ''; 
             this.form.name = '';
           } catch (error) {
-            // console.error('Failed to update category:', error);
             this.$message.error('更新电影分类失败');
           }
         } else {
