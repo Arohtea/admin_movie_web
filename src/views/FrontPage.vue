@@ -18,6 +18,7 @@
               <el-menu-item index="/movie/search">搜索</el-menu-item>
               <el-menu-item index="/movie/update">更新</el-menu-item>
               <el-menu-item index="/movie/delete">删除</el-menu-item>
+              <el-menu-item index="/component/delete">评论</el-menu-item>
             </el-submenu>
           </el-menu>
         </el-aside>

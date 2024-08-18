@@ -10,6 +10,7 @@ import MovieDel from '@/components/MovieDel.vue';
 import MovieUpdate from '@/components/MovieUpdate.vue';
 import MovieSearch from '@/components/MovieSearch.vue';
 import NotFound from '@/views/NotFound.vue';
+import ComponentDel from '@/components/ComponentDel.vue';
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -63,6 +64,11 @@ const router = new VueRouter({
                     name: 'moviesearch',
                     path: '/movie/search',
                     component: MovieSearch
+                },
+                {
+                    name: 'componentdel',
+                    path: '/component/delete',
+                    component: ComponentDel
                 }
             ]
         },

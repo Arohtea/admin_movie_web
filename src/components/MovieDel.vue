@@ -19,10 +19,19 @@
           </el-descriptions-item>
         </el-descriptions>
       </el-card>
+      <p></p>
       <el-form-item>
         <el-button type="primary" @click="deleteMovie">删除</el-button>
       </el-form-item>
     </el-form>
+
+    <el-dialog title="提示" :visible.sync="confirmVisible" width="30%" center>
+      <span>确定要删除此电影吗？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancelDelete">取 消</el-button>
+        <el-button type="primary" @click="confirmDelete">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -35,11 +44,8 @@ export default {
       form: {
         id: null
       },
-      movie: [
-        {
-          
-        }
-      ]
+      movie: [{}],
+      confirmVisible: false
     };
   },
   created() {
@@ -76,16 +82,16 @@ export default {
       }, 300);
     },
     loadMovieById() {
-      const movieId = this.form.id.trim();
+      const movieId = this.form.id;
       if (!movieId) {
         this.$message.warning('请输入有效的电影ID');
         return;
       }
 
-      instance.get(`/movie?id=${movieId}`)
+      instance.get(`/movie/search?id=${movieId}`)
         .then(response => {
           const movie = response.data;
-          this.movie = [movie];
+          this.movie[0] = movie;
         })
         .catch(error => {
           if (error.response && error.response.status === 404) {

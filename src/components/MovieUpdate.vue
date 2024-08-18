@@ -2,7 +2,7 @@
   <div class="movie-management">
     <el-form :model="form" ref="form" :rules="rules" label-width="120px" class="movie-form">
       <el-form-item label="电影ID">
-        <el-input v-model="form.id" placeholder="请输入电影ID" @input="debounceLoadMovieById"></el-input>
+        <el-input v-model.number="form.id" placeholder="请输入电影ID" @input="debounceLoadMovieById"></el-input>
       </el-form-item>
       <el-form-item prop="categoryId" label="电影分类">
         <el-input v-model.number="form.categoryId"></el-input>
@@ -11,10 +11,16 @@
         <el-input v-model="form.title"></el-input>
       </el-form-item>
       <el-form-item prop="imgsrc" label="电影图像地址">
-        <el-input v-model="form.imgsrc"></el-input>
+        <el-upload action="http://localhost:8080/upload" :show-file-list="false" :on-success="handleAvatarSuccess"
+            class="avatar-uploader" accept="image/*" :before-upload="beforeAvatarUpload">
+            <el-button size="small">上传文件</el-button>
+          </el-upload>
       </el-form-item>
       <el-form-item prop="imgcsrc" label="轮播图地址">
-        <el-input v-model="form.imgcsrc"></el-input>
+        <el-upload action="http://localhost:8080/upload" :show-file-list="false" :on-success="handleSuccess"
+            class="avatar-uploader" accept="image/*" :before-upload="beforeAvatarUpload">
+            <el-button size="small">上传文件</el-button>
+          </el-upload>
       </el-form-item>
       <el-form-item prop="actors" label="电影演员">
         <el-input v-model="form.actors"></el-input>
@@ -46,7 +52,7 @@ export default {
   data() {
     return {
       form: {
-        id: '', 
+        id: null,
         categoryId: null,
         title: '',
         imgsrc: '',
@@ -118,7 +124,7 @@ export default {
         return;
       }
 
-      instance.get(`/movie/${movieId}`)
+      instance.get(`/movie/search/id=?${movieId}`)
         .then(response => {
           const movie = response.data;
           this.form.categoryId = movie.categoryId;
@@ -139,7 +145,35 @@ export default {
             this.$message.error('加载电影失败');
           }
         });
+    },
+    beforeAvatarUpload(file) {
+    const isJPGorPNG = file.type === 'image/jpeg' || file.type === 'image/png';
+    const isLt2M = file.size / 1920 / 1080 < 12;
+
+    if (!isJPGorPNG) {
+      this.$message.error('上传图片只能是 JPG 或 PNG 格式!');
     }
+    if (!isLt2M) {
+      this.$message.error('上传图片大小不能超过 12MB!');
+    }
+    return isJPGorPNG && isLt2M;
+  },
+    handleAvatarSuccess(response) {
+      if (response.code === 0) {
+        this.form.imgsrc = response.data;
+        this.$message.success('上传成功');
+      } else {
+        this.$message.error('上传失败');
+      }
+    },
+    handleSuccess(response) {
+      if (response.code === 0) {
+        this.form.imgcsrc = response.data;
+        this.$message.success('上传成功');
+      } else {
+        this.$message.error('上传失败');
+      }
+    },
   }
 };
 </script>
