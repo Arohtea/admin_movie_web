@@ -2,7 +2,7 @@
   <div class="movie-search">
     <el-form :model="searchForm" class="search-form">
       <el-form-item prop="keyword">
-        <el-input v-model="searchForm.keyword" placeholder="请输入关键词" clearable @keyup.enter.native="searchMovies">
+        <el-input v-model="searchForm.keyword" placeholder="请输入关键词" >
           <template #append>
             <el-button slot="append" icon="el-icon-search" @click="searchMovies"></el-button>
           </template>
@@ -55,7 +55,11 @@ export default {
   },
   methods: {
     searchMovies() {
-      if (this.searchForm.keyword.trim() !== '') {
+      if (this.searchForm.keyword.length === 0) {
+        this.$message.warning('请输入关键词');
+        return;
+      }
+      if (this.searchForm.keyword.length >0) {
         instance.get('/movie/detail', {
           params: {
             pageNum: this.searchCurrentPage,
@@ -66,6 +70,9 @@ export default {
           .then(response => {
             this.searchResults = response.data.data.items;
             this.searchTotal = response.data.data.total;
+            if (this.searchResults.length === 0) {
+              this.$message.warning('未找到相关电影');
+            }
           })
           .catch(error => {
             console.error('Failed to search movies:', error);

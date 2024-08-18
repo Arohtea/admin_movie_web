@@ -5,7 +5,7 @@
         <el-input v-model.number="form.id" placeholder="请输入电影ID" @input="debounceLoadMovieById"></el-input>
       </el-form-item>
       <el-card v-if="movie.length > 0" class="movie-details">
-        <el-descriptions :column="1" border :content-style="{ width: '1800px' }">
+        <el-descriptions :column="1" border :content-style="{ width: '1500px' }">
           <el-descriptions-item label="电影名称">{{ movie[0].title }}</el-descriptions-item>
           <el-descriptions-item label="电影分类">{{ movie[0].categoryId }}</el-descriptions-item>
           <el-descriptions-item label="上映年份">{{ movie[0].year }}</el-descriptions-item>

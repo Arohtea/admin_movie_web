@@ -107,7 +107,7 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      this.form.id = ''; // 清空电影ID
+      this.form.id = null; 
     },
     debounceLoadMovieById() {
       if (this.loadTimer) {
@@ -118,15 +118,15 @@ export default {
       }, 300);
     },
     loadMovieById() {
-      const movieId = this.form.id.trim();
+      const movieId = this.form.id;
       if (!movieId) {
         this.$message.warning('请输入有效的电影ID');
         return;
       }
 
-      instance.get(`/movie/search/id=?${movieId}`)
+      instance.get(`/movie/search?id=${movieId}`)
         .then(response => {
-          const movie = response.data;
+          const movie = response.data.data;
           this.form.categoryId = movie.categoryId;
           this.form.title = movie.title;
           this.form.imgsrc = movie.imgsrc;
