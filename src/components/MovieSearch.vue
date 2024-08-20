@@ -29,7 +29,7 @@
 
     <el-pagination
       background
-      layout="prev, pager, next"
+      layout="total,prev, pager, next,jumper"
       :total="searchTotal"
       :page-size="searchPageSize"
       :current-page.sync="searchCurrentPage"
