@@ -44,7 +44,7 @@ export default {
       form: {
         id: null
       },
-      movie: [{}],
+      movie: [],
       confirmVisible: false
     };
   },
@@ -90,8 +90,13 @@ export default {
 
       instance.get(`/movie/search?id=${movieId}`)
         .then(response => {
+          if (response.data.data ==null) {
+            this.$message.error('加载电影失败');
+            console.log('Failed to load movie')
+            return;
+          }
           const movie = response.data.data;
-          this.movie[0] = movie;
+          this.movie = [movie];
         })
         .catch(error => {
           if (error.response && error.response.status === 404) {

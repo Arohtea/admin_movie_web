@@ -42,7 +42,7 @@ export default {
       form: {
         id: null
       },
-      currentComments: [{}],
+      currentComments: [],
       totalComments: 0,
       pageSize: 10,
       currentPage: 1,
@@ -94,17 +94,18 @@ export default {
 
       instance.get(`/comment?pageNum=${page}&pageSize=${this.pageSize}&movieId=${movieId}`)
         .then(response => {
+          if (response.data.code==1) {
+            this.$message.warning(response.data.message);
+            console.log('Failed to load comments')
+            return;
+          }
           const { items, total } = response.data.data;
           this.currentComments = items;
           this.totalComments = total;
         })
         .catch(error => {
-          if (error.response && error.response.status === 404) {
-            this.$message.error('未找到该电影的评论');
-          } else {
             console.error('Failed to load comments:', error);
             this.$message.error('加载评论失败');
-          }
         });
     },
     handleCurrentChange(page) {

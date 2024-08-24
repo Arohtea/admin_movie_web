@@ -2,7 +2,7 @@
   <div class="movie-search">
     <el-form :model="searchForm" class="search-form">
       <el-form-item prop="keyword">
-        <el-input v-model="searchForm.keyword" placeholder="请输入关键词" >
+        <el-input v-model="searchForm.keyword" placeholder="请输入关键词"  @keyup.enter.prevent="searchMovies">
           <template #append>
             <el-button slot="append" icon="el-icon-search" @click="searchMovies"></el-button>
           </template>
@@ -40,6 +40,7 @@
 
 <script>
 import instance from '@/instance/instance';
+
 
 export default {
   data() {

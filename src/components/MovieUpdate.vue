@@ -88,7 +88,8 @@ export default {
           instance.put('/movie', this.form)
             .then(response => {
               if (response.data.code === 0) {
-                this.fetchMovies();
+                // this.loadMovieById();
+                this.$message.success('更新电影成功');
                 this.resetForm(formName);
               } else {
                 this.$message.error('更新电影失败');
@@ -126,6 +127,10 @@ export default {
 
       instance.get(`/movie/search?id=${movieId}`)
         .then(response => {
+          if (response.data.code !== 0) {
+            this.$message.error('未找到该电影');
+            return;
+          }
           const movie = response.data.data;
           this.form.categoryId = movie.categoryId;
           this.form.title = movie.title;
