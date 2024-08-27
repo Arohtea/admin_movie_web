@@ -84,7 +84,7 @@ export default {
         year: null,
         status: 0
       },
-      status: '1',
+      status: '0',
       movies: [],
       currentPage: 1, 
       pageSize: 10, 
@@ -118,6 +118,7 @@ export default {
               if (response.data.code === 0) {
                 this.fetchMovies();
                 this.resetForm(formName);
+                this.$message.success('添加电影成功');
               } else {
                 this.$message.error('添加电影失败');
               }
