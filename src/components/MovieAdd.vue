@@ -9,13 +9,13 @@
       </el-form-item>
       <el-form-item prop="imgsrc" label="电影图像地址">
         <el-upload action="http://localhost:8080/upload" :show-file-list="false" :on-success="handleAvatarSuccess"
-            class="avatar-uploader" accept="image/*" :before-upload="beforeAvatarUpload">
+            class="avatar-uploader" accept="image/*" :before-upload="beforeAvatarUpload" :multiple="false">
             <el-button size="small">上传文件</el-button>
           </el-upload>
       </el-form-item>
       <el-form-item prop="imgcsrc" label="轮播图地址">
         <el-upload action="http://localhost:8080/upload" :show-file-list="false" :on-success="handleSuccess"
-            class="avatar-uploader" accept="image/*" :before-upload="beforeAvatarUpload">
+            class="avatar-uploader" accept="image/*" :before-upload="beforeAvatarUpload" :multiple="false">
             <el-button size="small">上传文件</el-button>
           </el-upload>
       </el-form-item>

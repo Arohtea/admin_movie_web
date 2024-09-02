@@ -4,7 +4,6 @@
   <div id="navg">
       <el-container>
         <el-aside width="200px">
-          <!-- 左侧导航栏 -->
           <el-menu router>
             <el-submenu index="1">
               <template slot="title">电影分类管理</template>
@@ -23,7 +22,6 @@
           </el-menu>
         </el-aside>
         <el-main>
-          <!-- 右侧内容区 -->
           <router-view></router-view>
         </el-main>
       </el-container>
