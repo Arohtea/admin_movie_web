@@ -5,30 +5,25 @@
         <el-input v-model.number="form.id" placeholder="请输入电影ID" @input="debounceLoadMovieById"></el-input>
       </el-form-item>
       <el-form-item label="选择分类" prop="categoryId">
-          <el-select v-model="form.categoryId" placeholder="请选择分类" @change="onCategoryChange">
-            <el-option
-              v-for="category in categories"
-              :key="category.id"
-              :label="category.name"
-              :value="category.id"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
+        <el-select v-model="form.categoryId" placeholder="请选择分类" @change="onCategoryChange">
+          <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item prop="title" label="电影名称">
         <el-input v-model="form.title"></el-input>
       </el-form-item>
       <el-form-item prop="imgsrc" label="电影图像地址">
         <el-upload action="http://localhost:8080/upload" :show-file-list="false" :on-success="handleAvatarSuccess"
-            class="avatar-uploader" accept="image/*" :before-upload="beforeAvatarUpload" :multiple="false">
-            <el-button size="small">上传文件</el-button>
-          </el-upload>
+          class="avatar-uploader" accept="image/*" :before-upload="beforeAvatarUpload" :multiple="false">
+          <el-button size="small">上传文件</el-button>
+        </el-upload>
       </el-form-item>
       <el-form-item prop="imgcsrc" label="轮播图地址">
         <el-upload action="http://localhost:8080/upload" :show-file-list="false" :on-success="handleSuccess"
-            class="avatar-uploader" accept="image/*" :before-upload="beforeAvatarUpload" :multiple="false">
-            <el-button size="small">上传文件</el-button>
-          </el-upload>
+          class="avatar-uploader" accept="image/*" :before-upload="beforeAvatarUpload" :multiple="false">
+          <el-button size="small">上传文件</el-button>
+        </el-upload>
       </el-form-item>
       <el-form-item prop="actors" label="电影演员">
         <el-input v-model="form.actors"></el-input>
@@ -50,6 +45,24 @@
         <el-button @click="resetForm('form')">重置</el-button>
       </el-form-item>
     </el-form>
+
+    <el-table :data="movies" style="width: 100%" class="movie-list">
+      <el-table-column prop="title" label="电影名称" width="180"></el-table-column>
+      <el-table-column prop="categoryId" label="电影分类" width="180"></el-table-column>
+      <el-table-column prop="year" label="上映年份" width="180"></el-table-column>
+      <el-table-column prop="director" label="导演"></el-table-column>
+      <el-table-column prop="actors" label="演员"></el-table-column>
+      <el-table-column prop="imgsrc" label="图片地址"></el-table-column>
+      <el-table-column prop="imgcsrc" label="轮播图地址"></el-table-column>
+      <el-table-column prop="country" label="国家"></el-table-column>
+      <el-table-column label="是否轮播" width="180">
+        <template #default="{ row }">
+          {{ row.status === 1 ? '是' : '否' }}
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination background layout="total,prev, pager, next,jumper" :total="total" :page-size="pageSize"
+      :current-page.sync="currentPage" @current-change="handleCurrentChange" />
   </div>
 </template>
 
@@ -60,7 +73,6 @@ export default {
   data() {
     return {
       form: {
-        categories: [],
         id: null,
         categoryId: null,
         title: '',
@@ -72,6 +84,11 @@ export default {
         year: null,
         status: 0
       },
+      categories: [],
+      movies: [],
+      currentPage: 1,
+      pageSize: 10,
+      total: 0,
       status: '0',
       rules: {
         categoryId: [{ required: true, message: '请输入电影分类', trigger: 'blur' }],
@@ -86,6 +103,10 @@ export default {
     };
   },
   methods: {
+    handleCurrentChange(val) {
+    this.currentPage = val;
+    this.fetchMovies(val);
+  },
     onCategoryChange(value) {
       this.form.selectedCategory = value;
     },
@@ -122,14 +143,14 @@ export default {
             });
         } else {
           console.log('error submit!!');
-          
+
           return false;
         }
       });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      this.form.id = null; 
+      this.form.id = null;
     },
     debounceLoadMovieById() {
       if (this.loadTimer) {
@@ -145,7 +166,6 @@ export default {
         this.$message.warning('请输入有效的电影ID');
         return;
       }
-
       instance.get(`/movie/search?id=${movieId}`)
         .then(response => {
           if (response.data.code !== 0) {
@@ -173,17 +193,17 @@ export default {
         });
     },
     beforeAvatarUpload(file) {
-    const isJPGorPNG = file.type === 'image/jpeg' || file.type === 'image/png';
-    const isLt2M = file.size / 1920 / 1080 < 12;
+      const isJPGorPNG = file.type === 'image/jpeg' || file.type === 'image/png';
+      const isLt2M = file.size / 1920 / 1080 < 12;
 
-    if (!isJPGorPNG) {
-      this.$message.error('上传图片只能是 JPG 或 PNG 格式!');
-    }
-    if (!isLt2M) {
-      this.$message.error('上传图片大小不能超过 12MB!');
-    }
-    return isJPGorPNG && isLt2M;
-  },
+      if (!isJPGorPNG) {
+        this.$message.error('上传图片只能是 JPG 或 PNG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传图片大小不能超过 12MB!');
+      }
+      return isJPGorPNG && isLt2M;
+    },
     handleAvatarSuccess(response) {
       if (response.code === 0) {
         this.form.imgsrc = response.data;
@@ -200,9 +220,45 @@ export default {
         this.$message.error('上传失败');
       }
     },
+    fetchMovies(page = this.currentPage) {
+    instance.get('/movie', {
+      params: {
+        pageNum: page,
+        pageSize: this.pageSize
+      }
+    })
+      .then(response => {
+        this.movies = response.data.data.items;
+        this.total = response.data.data.total;
+        instance.get('/category').then(res => {
+          if (res.data.code === 0) {
+            this.categories = res.data.data;
+            this.movies.forEach(movie => {
+              const category = this.categories.find(c => c.id === movie.categoryId);
+              if (category) {
+                movie.categoryId = category.name;
+              } else {
+                movie.categoryId = '';
+              }
+              console.log(movie.categoryId);
+            });
+          } else {
+            this.$message.error('获取电影分类失败');
+          }
+        });
+      })
+      .catch(error => {
+        console.error('Failed to fetch movies:', error);
+        this.$message.error('获取电影列表失败');
+      });
   },
+  },
+  
+  
   created() {
     this.fetchCategories();
+    this.fetchMovies(1);
+    
   },
 };
 </script>
@@ -212,6 +268,7 @@ export default {
   display: flex;
   flex-direction: column;
 }
+
 .movie-form {
   margin-bottom: 20px;
 }
