@@ -4,9 +4,17 @@
       <el-form-item label="电影ID">
         <el-input v-model.number="form.id" placeholder="请输入电影ID" @input="debounceLoadMovieById"></el-input>
       </el-form-item>
-      <el-form-item prop="categoryId" label="电影分类">
-        <el-input v-model.number="form.categoryId"></el-input>
-      </el-form-item>
+      <el-form-item label="选择分类" prop="categoryId">
+          <el-select v-model="form.categoryId" placeholder="请选择分类" @change="onCategoryChange">
+            <el-option
+              v-for="category in categories"
+              :key="category.id"
+              :label="category.name"
+              :value="category.id"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
       <el-form-item prop="title" label="电影名称">
         <el-input v-model="form.title"></el-input>
       </el-form-item>
@@ -52,6 +60,7 @@ export default {
   data() {
     return {
       form: {
+        categories: [],
         id: null,
         categoryId: null,
         title: '',
@@ -77,6 +86,18 @@ export default {
     };
   },
   methods: {
+    onCategoryChange(value) {
+      this.form.selectedCategory = value;
+    },
+    async fetchCategories() {
+      instance.get('/category').then(response => {
+        if (response.data.code === 0) {
+          this.categories = response.data.data;
+        } else {
+          this.$message.error('获取电影分类失败');
+        }
+      });
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (this.status === '1') {
@@ -179,7 +200,10 @@ export default {
         this.$message.error('上传失败');
       }
     },
-  }
+  },
+  created() {
+    this.fetchCategories();
+  },
 };
 </script>
 

@@ -13,7 +13,7 @@
     <el-table :data="searchResults" style="width: 100%" class="movie-list">
       <el-table-column prop="id" label="电影ID" width="180"></el-table-column>
       <el-table-column prop="title" label="电影名称" width="180"></el-table-column>
-      <el-table-column prop="categoryId" label="电影分类ID" width="180"></el-table-column>
+      <el-table-column prop="categoryId" label="电影分类" width="180"></el-table-column>
       <el-table-column prop="year" label="上映年份" width="180"></el-table-column>
       <el-table-column prop="director" label="导演"></el-table-column>
       <el-table-column prop="actors" label="演员"></el-table-column>
@@ -51,7 +51,8 @@ export default {
       searchResults: [],
       searchCurrentPage: 1,
       searchPageSize: 10,
-      searchTotal: 0
+      searchTotal: 0,
+      categories:[]
     };
   },
   methods: {
@@ -73,6 +74,23 @@ export default {
             this.searchTotal = response.data.data.total;
             if (this.searchResults.length === 0) {
               this.$message.warning('未找到相关电影');
+            }else{
+              instance.get('/category').then(res => {
+            if (res.data.code === 0) {
+              this.categories = res.data.data;
+              this.searchResults.forEach(searchResults => {
+              const category = this.categories.find(c => c.id === searchResults.categoryId);
+              if (category) {
+                searchResults.categoryId = category.name;
+              } else {
+                searchResults.categoryId = ''; 
+              }
+              console.log(searchResults.categoryId);
+            });
+            } else {
+              this.$message.error('获取电影分类失败');
+            }
+          });
             }
           })
           .catch(error => {

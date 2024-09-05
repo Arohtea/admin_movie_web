@@ -45,11 +45,7 @@ export default {
         selectedCategory: '', 
         name: '',
       },
-      categories: [
-        { id: 1, name: '科幻' },
-        { id: 2, name: '动作' },
-        { id: 3, name: '喜剧' }
-      ],
+      categories: [],
       rules: {
         selectedCategory: [{ required: true, message: '请选择分类', trigger: 'change' }],
         name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }]
