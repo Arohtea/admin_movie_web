@@ -1,7 +1,7 @@
 <template>
   <div class="movie-management">
     <el-form :model="form" ref="form" :rules="rules" label-width="120px" class="movie-form">
-      <el-form-item label="电影ID">
+      <el-form-item label="电影ID" prop="Id">
         <el-input v-model.number="form.id" placeholder="请输入电影ID" @input="debounceLoadMovieById"></el-input>
       </el-form-item>
       <el-form-item label="选择分类" prop="categoryId">
@@ -91,6 +91,7 @@ export default {
       total: 0,
       status: '0',
       rules: {
+        Id: [{ required: true, message: '请输入电影ID', trigger: 'blur' }],
         categoryId: [{ required: true, message: '请输入电影分类', trigger: 'blur' }],
         title: [{ required: true, message: '请输入电影名称', trigger: 'blur' }],
         imgsrc: [{ required: true, message: '请输入电影图像地址', trigger: 'blur' }],

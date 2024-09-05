@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     searchMovies() {
-      if (this.searchForm.keyword.length === 0) {
+      if (this.searchForm.keyword.trim().length === 0) {
         this.$message.warning('请输入关键词');
         return;
       }
